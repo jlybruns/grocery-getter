@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html lang="en" class="h-100">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Grocery Getter</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+        <style>
+            li {
+                list-style-type: "\2610";
+                cursor: pointer;
+                width: 100%;
+                background-color: white;
+                margin: 5px 0;
+            }
+        </style>
+
+    </head>
+    <body class="h-100 bg-body-tertiary">
+        <main class="form w-100 h-100 m-auto">
+            <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-10 col-md-8 col-lg-6">
+                    <form id="myForm">
+                        <img src="wagon.png" class="w-25" style="transform: scaleX(-1);">
+                        <h1 class="h3 mb-3 fw-normal">Grocery Getter</h1>
+                        <input type="text" class="form-control" id="newStuff" placeholder="Put your new stuff here">
+                        <label for="newStuff">Add items to your shopping list.</label>
+                        <br>
+                        <button class="btn mt-3 mb-5" style="background-color: #da9200; color: white;" onclick="getItem()">Add items</button>
+                        <button class="btn mt-3 mb-5 my-2" style="background-color: #d3a240; color: black;" onclick="printPageArea('shoppingList')">Print List</button>
+                        <div class="form-floating">
+                            <ul class="list-group mb-2" id="shoppingList">
+                                <!-- <li class="list-group-item mb-2">
+                                    <input type="checkbox" value="" id="firstCheckbox" class="form-check-input me-1">
+                                    <label for="firstCheckbox" class="form-check-label">Test</label>
+                                </li> -->
+                            </ul>
+                        </div> 
+                    </form>
+                </div>
+            </div>
+        </main>
+
+
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" async defer></script>
+        <script>
+            const items = [];
+            const shoppingList = document.getElementById('shoppingList');
+            
+            function getItem() {
+                event.preventDefault();
+                let item = document.getElementById('newStuff').value;
+                if (items.includes(item)) {
+                    alert('You have already added this item.');
+                } else {
+                    items.push(item);
+                    items.sort();
+                    removeList();
+                    makeList();
+                }
+                document.getElementById("myForm").reset();
+            }
+
+            function makeList() {
+                for(item of items) {
+                    let listItem = document.createElement("li");
+                    listItem.textContent = item;
+                    listItem.addEventListener("click", removeItem);
+                    shoppingList.appendChild(listItem);
+                }
+            }
+
+            function removeList() {
+                while(shoppingList.firstChild) {
+                shoppingList.removeChild(shoppingList.firstChild);
+                }
+            }
+
+            function removeItem(event) {
+                const item = event.currentTarget.textContent;
+                console.log(item);
+                items.splice(items.indexOf(item));
+                removeList();
+                makeList();
+            }
+
+            function printPageArea(shoppingList) {
+                let printContent = document.getElementById(shoppingList).innerHTML;
+                let originalContent = document.body.innerHTML;
+                document.body.innerHTML = printContent;
+                window.print();
+                document.body.innerHTML = originalContent;
+            }
+        </script>
+    </body>
+</html>
+
+
